@@ -2,7 +2,7 @@ public class Sample2
 {
   public static void main(String args[])
   {
-    System.out.println("プログラムを開始しました。");
-    Rectangle r = new Rectangle();
+    Car c1 = new Car(1234, 10.5);
+    c1.show();
   }
 }
