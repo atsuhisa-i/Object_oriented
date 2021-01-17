@@ -1,3 +1,5 @@
+import java.awt.*;
+
 public class Circle
 {
   private int x;
@@ -5,12 +7,12 @@ public class Circle
 
   public Circle(int x, int y)
   {
-    System.out.println("円を作成しました。");
     this.x = x;
     this.y = y;
   }
-  public void show()
+  public void draw(Graphics g)
   {
-    System.out.println("円を(" + x + "," + y + ")に表示します。");
+    g.setColor(Color.black);
+    g.drawOval(x, y, 10, 10);
   }
 }
