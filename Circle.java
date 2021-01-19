@@ -1,18 +1,18 @@
+import java.awt.*;
+
 public class Circle
 {
   private int x;
   private int y;
-  private int r;
 
-  public Circle(int x, int y, int r)
+  public Circle(int x, int y)
   {
     this.x = x;
     this.y = y;
-    this.r = r;
   }
-  public void show()
+  public void draw(Graphics g)
   {
-    System.out.println("円を(" + x + "," + y + ")に表示します。");
-    System.out.println("半径の大きさは" + r + "です。");
+    g.setColor(Color.black);
+    g.drawOval(x, y, 10, 10);
   }
 }
