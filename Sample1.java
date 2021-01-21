@@ -1,18 +1,54 @@
-public class Sample1
+import java.util.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+
+public class Sample1 extends JFrame
 {
+  private SamplePanel sp;
+
   public static void main(String args[])
   {
-    Node n1 = new Node("Line");
-    n1.setNext(null);
-
-    Node n2 = new Node("Rectangle");
-    n2.setNext(n1);
-
-    Node n3 = new Node("Circle");
-    n3.setNext(n2);
-
-    for(Node n = n3; n != null; n = n.getNext()){
-      System.out.println(n);
+    Sample1 sm = new Sample1();
+  }
+  public Sample1()
+  {
+    super("サンプル");
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
+    setSize(300, 300);
+    sp = new SamplePanel();
+    add(sp, BorderLayout.CENTER);
+    setVisible(true);
+  }
+  public class SamplePanel extends JPanel
+  {
+    private ArrayList<ShadeCircle> shadecirclelist
+      = new ArrayList<ShadeCircle>();
+    
+    public SamplePanel()
+    {
+      addMouseListener(new SampleMouseListener());
+    }
+    public void paint(Graphics g)
+    {
+      super.paint(g);
+      Iterator<ShadeCircle> it
+        = shadecirclelist.iterator();
+      while(it.hasNext()){
+        ShadeCircle sc = it.next();
+        sc.draw(g);
+        sc.drawShade(g);
+      }
+    }
+    public class SampleMouseListener extends MouseAdapter
+    {
+      public void mousePressed(MouseEvent e)
+      {
+        shadecirclelist.add(
+          new ShadeCircle(e.getX(), e.getY()));
+        repaint();
+      }
     }
   }
 }
