@@ -1,17 +1,13 @@
 import java.awt.*;
 
-public class Rectangle
+public class Rectangle extends Shape
 {
-  private int x;
-  private int y;
-
   public Rectangle(int x, int y)
   {
-    this.x = x;
-    this.y = y;
+    super(x, y);
   }
   public void draw(Graphics g)
   {
-    g.drawRect(x, y, 10, 10);
+    g.drawRect(getX(), getY(), 10, 10);
   }
 }

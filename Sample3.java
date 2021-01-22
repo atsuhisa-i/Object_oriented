@@ -1,40 +1,60 @@
-import java.io.*;
+import java.util.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
-public class Sample3
+public class Sample3 extends JFrame
 {
-  public static void main(String args[])throws IOException
+  private SamplePanel sp;
+  private int state;
+
+  public static void main(String args[])
   {
-    Person p[];
-
-    System.out.println("人数を入力して下さい。");
-
-    BufferedReader br =
-      new BufferedReader(new InputStreamReader(System.in));
+    Sample3 sm = new Sample3();
+  }
+  public Sample3()
+  {
+    super("サンプル");
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
+    setSize(300, 300);
+    sp = new SamplePanel();
+    add(sp, BorderLayout.CENTER);
+    state = Shape.CIRCLE;
+    setVisible(true);
+  }
+  public class SamplePanel extends JPanel
+  {
+    private ArrayList<Shape> shapelist
+      = new ArrayList<Shape>();
     
-    String str = br.readLine();
-    int num = Integer.parseInt(str);
-
-    p = new Person[num];
-
-    for(int i=0; i<num; i++){
-
-      System.out.println("年齢を入力して下さい。");
-      str = br.readLine();
-      int age = Integer.parseInt(str);
-
-      System.out.println("体重を入力して下さい。");
-      str = br.readLine();
-      double weight = Double.parseDouble(str);
-
-      System.out.println("身長を入力して下さい。");
-      str = br.readLine();
-      double height = Double.parseDouble(str);
-
-      p[i] = new Person(age, weight, height);
+    public SamplePanel()
+    {
+      addMouseListener(new SampleMouseListener());
     }
-
-    for(int i=0; i<num; i++){
-      p[i].show();
+    public void paint(Graphics g)
+    {
+      super.paint(g);
+      Iterator<Shape> it = shapelist.iterator();
+      while(it.hasNext()){
+        Shape sh = it.next();
+        sh.draw(g);
+      }
+    }
+    public class SampleMouseListener extends MouseAdapter
+    {
+      public void mousePressed(MouseEvent e)
+      {
+        if(state == Shape.CIRCLE){
+          shapelist.add(new Circle(e.getX(),e.getY()));
+          state = Shape.RECTANGLE;
+        }
+        else{
+          shapelist.add(
+            new Rectangle(e.getX(),e.getY()));
+          state = Shape.CIRCLE;
+        }
+        repaint();
+      }
     }
   }
 }

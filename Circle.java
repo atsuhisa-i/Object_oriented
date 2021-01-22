@@ -1,20 +1,13 @@
 import java.awt.*;
 
-public class Circle
+public class Circle extends Shape
 {
-  private int x;
-  private int y;
-
   public Circle(int x, int y)
   {
-    this.x = x;
-    this.y = y;
+    super(x, y);
   }
-  public int getX(){return x;}
-  public int getY(){return y;}
   public void draw(Graphics g)
   {
-    g.setColor(Color.black);
-    g.drawOval(x, y, 10, 10);
+    g.drawOval(getX(), getY(), 10, 10);
   }
 }
