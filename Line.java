@@ -1,11 +1,11 @@
 import java.awt.*;
 
-public class Circle implements Shape
+public class Line implements Shape
 {
   private int x;
   private int y;
 
-  public Circle(int x, int y)
+  public Line(int x, int y)
   {
     this.x = x;
     this.y = y;
@@ -14,6 +14,6 @@ public class Circle implements Shape
   public int getY(){return y;}
   public void draw(Graphics g)
   {
-    g.drawOval(x, y, 10, 10);
+    g.drawLine(x, y, getX()+10, getY()+10);
   }
 }

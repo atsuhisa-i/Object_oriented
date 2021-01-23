@@ -3,29 +3,30 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-
-public class Sample1 extends JFrame
+public class Sample8 extends JFrame
 {
   private SamplePanel sp;
+  private int state;
 
   public static void main(String args[])
   {
-    Sample1 sm = new Sample1();
+    Sample8 sm = new Sample8();
   }
-  public Sample1()
+  public Sample8()
   {
     super("サンプル");
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(300, 300);
     sp = new SamplePanel();
     add(sp, BorderLayout.CENTER);
+    state = Shape.CIRCLE;
     setVisible(true);
   }
   public class SamplePanel extends JPanel
   {
-    private ArrayList<ShadeCircle> shadecirclelist
-      = new ArrayList<ShadeCircle>();
-    
+    private ArrayList<Shape> shapelist
+      = new ArrayList<Shape>();
+
     public SamplePanel()
     {
       addMouseListener(new SampleMouseListener());
@@ -33,20 +34,29 @@ public class Sample1 extends JFrame
     public void paint(Graphics g)
     {
       super.paint(g);
-      Iterator<ShadeCircle> it
-        = shadecirclelist.iterator();
+      Iterator<Shape> it = shapelist.iterator();
       while(it.hasNext()){
-        ShadeCircle sc = it.next();
-        sc.draw(g);
-        sc.drawShade(g);
+        Shape sh = it.next();
+        sh.draw(g);
       }
     }
     public class SampleMouseListener extends MouseAdapter
     {
       public void mousePressed(MouseEvent e)
       {
-        shadecirclelist.add(
-          new ShadeCircle(e.getX(), e.getY()));
+        if(state == Shape.CIRCLE){
+          shapelist.add(new Circle(e.getX(), e.getY()));
+          state = Shape.RECTANGLE;
+        }
+        else if(state == Shape.RECTANGLE){
+          shapelist.add(
+            new Rectangle(e.getX(), e.getY()));
+          state = Shape.LINE;
+        }
+        else{
+          shapelist.add(new Line(e.getX(), e.getY()));
+          state = Shape.CIRCLE;
+        }
         repaint();
       }
     }
