@@ -1,15 +1,13 @@
 public class Car
 {
   private int number;
-  private double gas;
 
-  public Car(int num, double g)
+  public Car(int num)
   {
     number = num;
-    gas = g;
   }
   public void show()
   {
-    System.out.println("ナンバーは" + number + "ガソリン量は" + gas + "です。");
+    System.out.println("ナンバーは" + number + "です。");
   }
 }
