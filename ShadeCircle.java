@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class ShadeCircle
+public class ShadeCircle implements Shape
 {
   private Circle c;
 
@@ -8,7 +8,15 @@ public class ShadeCircle
   {
     this.c = c;
   }
-  public void drawShade(Graphics g)
+  public int getX()
+  {
+    return c.getX();
+  }
+  public int getY()
+  {
+    return c.getY();
+  }
+  public void draw(Graphics g)
   {
     c.draw(g);
     g.setColor(Color.gray);

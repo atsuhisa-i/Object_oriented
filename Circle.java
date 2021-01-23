@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Circle
+public class Circle implements Shape
 {
   private int x;
   private int y;
@@ -15,6 +15,6 @@ public class Circle
   public void draw(Graphics g)
   {
     g.setColor(Color.black);
-    g.drawOval(x, y, 10, 10);
+    g.drawOval(getX(), getY(), 10, 10);
   }
 }
