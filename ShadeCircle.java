@@ -2,24 +2,18 @@ import java.awt.*;
 
 public class ShadeCircle implements Shape
 {
-  private Circle c;
+  private Shape s;
 
-  public ShadeCircle(Circle c)
+  public ShadeCircle(Shape s)
   {
-    this.c = c;
+    this.s = s;
   }
-  public int getX()
-  {
-    return c.getX();
-  }
-  public int getY()
-  {
-    return c.getY();
-  }
+  public int getX(){return s.getX();}
+  public int getY(){return s.getY();}
   public void draw(Graphics g)
   {
-    c.draw(g);
+    s.draw(g);
     g.setColor(Color.gray);
-    g.drawOval(c.getX()+5, c.getY()+5, 10, 10);
+    g.drawOval(getX()+5, getY()+5, 10, 10);
   }
 }

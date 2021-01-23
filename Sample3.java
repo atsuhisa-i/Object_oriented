@@ -6,7 +6,6 @@ import javax.swing.*;
 public class Sample3 extends JFrame
 {
   private SamplePanel sp;
-  private int state;
 
   public static void main(String args[])
   {
@@ -19,7 +18,6 @@ public class Sample3 extends JFrame
     setSize(300, 300);
     sp = new SamplePanel();
     add(sp, BorderLayout.CENTER);
-    state = Shape.CIRCLE;
     setVisible(true);
   }
   public class SamplePanel extends JPanel
@@ -44,15 +42,8 @@ public class Sample3 extends JFrame
     {
       public void mousePressed(MouseEvent e)
       {
-        if(state == Shape.CIRCLE){
-          shapelist.add(new Circle(e.getX(),e.getY()));
-          state = Shape.RECTANGLE;
-        }
-        else{
-          shapelist.add(
-            new Rectangle(e.getX(),e.getY()));
-          state = Shape.CIRCLE;
-        }
+        shapelist.add(new ShadeCircle(
+          new Char(e.getX(), e.getY())));
         repaint();
       }
     }
