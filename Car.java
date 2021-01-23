@@ -1,13 +1,13 @@
-public class Car
+public class Car extends Vehicle
 {
-  private int number;
-
-  public Car(int num)
+  public Car(int m)
   {
-    number = num;
+    meter = m;
+    price = 100;
   }
-  public void show()
+  public void calcFare()
   {
-    System.out.println("ナンバーは" + number + "です。");
+    fare = meter * price;
+    System.out.println("車両の運賃は" + fare + "です。");
   }
 }
