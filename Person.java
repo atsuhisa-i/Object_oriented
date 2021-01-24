@@ -1,17 +1,19 @@
-public class Person
-{
-  private int age;
-  private double weight;
-  private double height;
+import java.util.*;
 
-  public Person(int age, double weight, double height)
+public class Person implements Node
+{
+  private String nodeName;
+
+  public Person(String s)
   {
-    this.age = age;
-    this.weight = weight;
-    this.height = height;
+    nodeName = s;
   }
-  public void show()
+  public String toString()
   {
-    System.out.println("年齢は" + age + "体重は" + weight + "身長は" + height + "です。");
+    return "--member:" + nodeName;
+  }
+  public Vector<Node> getChildren()
+  {
+    return null;
   }
 }

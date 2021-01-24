@@ -1,22 +1,7 @@
-public class Node
-{
-  private String data;
-  private Node next;
+import java.util.*;
 
-  public Node(String d)
-  {
-    data = d;
-  }
-  public void setNext(Node n)
-  {
-    next = n;
-  }
-  public Node getNext()
-  {
-    return next;
-  }
-  public String toString()
-  {
-    return data;
-  }
+public interface Node
+{
+  public String toString();
+  public Vector<Node> getChildren();
 }
