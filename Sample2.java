@@ -1,11 +1,15 @@
 import java.util.*;
+import java.text.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.tree.*;
+import javax.swing.event.*;
 
 public class Sample2 extends JFrame
 {
-  private SamplePanel sp;
+  private JTree tr;
+  private Node root;
 
   public static void main(String args[])
   {
@@ -14,38 +18,72 @@ public class Sample2 extends JFrame
   public Sample2()
   {
     super("サンプル");
+    Section s1 = new Section("Company");
+    Section s2 = new Section("Trade");
+    Section s3 = new Section("Accounting");
+
+    Person p1 = new Person("Sato");
+    Person p2 = new Person("Takahashi");
+    Person p3 = new Person("Suzuki");
+
+    s1.add(s2);
+    s1.add(s3);
+    s2.add(p1);
+    s2.add(p2);
+    s3.add(p3);
+
+    root = s1;
+
+    tr = new JTree(new MyTreeModel());
+
+    add(tr, BorderLayout.CENTER);
+
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(300, 300);
-    sp = new SamplePanel();
-    add(sp, BorderLayout.CENTER);
     setVisible(true);
   }
-  public class SamplePanel extends JPanel
+  public class MyTreeModel implements TreeModel
   {
-    private ArrayList<Shape> shapelist
-      = new ArrayList<Shape>();
-    
-    public SamplePanel()
+    public MyTreeModel(){}
+    public Object getRoot()
     {
-      addMouseListener(new SampleMouseListener());
+      return root;
     }
-    public void paint(Graphics g)
+    public Object getChild(Object parent, int index)
     {
-      super.paint(g);
-      Iterator<Shape> it = shapelist.iterator();
-      while(it.hasNext()){
-        Shape sh = it.next();
-        sh.draw(g);
+      Node p = (Node)parent;
+      Vector<Node> children = p.getChildren();
+      return children.elementAt(index);
+    }
+    public int getChildCount(Object parent)
+    {
+      Node p = (Node)parent;
+      Vector<Node> children = p.getChildren();
+      return children.size();
+    }
+    public int getIndexOfChild(Object parent, Object child)
+    {
+      Node p = (Node)parent;
+      Vector<Node> children = p.getChildren();
+      Iterator<Node> it = children.iterator();
+
+      for(int i=0; it.hasNext(); i++){
+        Node nn = it.next();
+        if(nn.equals(child)){
+          return i;
+        }
       }
+      return -1;
     }
-    public class SampleMouseListener extends MouseAdapter
+    public boolean isLeaf(Object node)
     {
-      public void mousePressed(MouseEvent e)
-      {
-        shapelist.add(new ShadeCircle(
-          new Circle(e.getX(), e.getY())));
-        repaint();
-      }
+      if(node instanceof Person)
+        return true;
+      else
+        return false;
     }
+    public void addTreeModelListener(TreeModelListener l){}
+    public void removeTreeModelListener(TreeModelListener l){}
+    public void valueForPathChanged(TreePath path, Object newValue){}
   }
 }
