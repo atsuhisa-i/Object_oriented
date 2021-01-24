@@ -1,29 +1,29 @@
+import java.util.*;
 import java.awt.*;
 
-public class Hook implements Shape
+public class Hook
 {
-  public static final int MIN = 0;
-  public static final int MAX = 2;
+  private Ball bl;
 
-  static int state = 0;
-
-  private Circle c;
-
-  public Hook(int x, int y)
+  public Hook()
   {
-    if(state == MAX){
-      state = MIN;
-      c = new Circle(x+20, y+20);
-    }
-    else{
-      c = new Circle(x, y);
-      state++;
-    }
+    Random rnd = new Random();
+    int x = rnd.nextInt(300);
+    int y = rnd.nextInt(300);
+
+    bl = new Ball(x, y);
   }
-  public int getX(){return c.getX();}
-  public int getY(){return c.getY();}
   public void draw(Graphics g)
   {
-    c.draw(g);
+    Random rnd = new Random();
+
+    int r = rnd.nextInt(255);
+    int gr = rnd.nextInt(255);
+    int b = rnd.nextInt(255);
+
+    Color c = new Color(r, gr, b);
+
+    g.setColor(c);
+    bl.draw(g);
   }
 }
