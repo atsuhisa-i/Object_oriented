@@ -1,29 +1,41 @@
-import java.io.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
-public class Practice2
+public class Practice2 extends JFrame
 {
+  private SamplePanel sp;
 
-  public static void main(String args[])throws IOException
+  public static void main(String args[])
   {
-    System.out.println("x座標を入力して下さい。");
+    Practice2 pr = new Practice2();
+  }
+  public Practice2()
+  {
+    super("サンプル");
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
+    setSize(300, 300);
+    sp = new SamplePanel();
+    add(sp, BorderLayout.CENTER);
+    setVisible(true);
+  }
+  public class SamplePanel extends JPanel
+  {
+    Hook h[] = new Hook[30];
 
-    BufferedReader br =
-      new BufferedReader(new InputStreamReader(System.in));
-    
-    String str1 = br.readLine();
-    int x = Integer.parseInt(str1);
-
-    System.out.println("y座標を入力して下さい。");
-
-    String str2 = br.readLine();
-    int y = Integer.parseInt(str2);
-
-    System.out.println("半径を入力して下さい。");
-
-    String str3 = br.readLine();
-    int r = Integer.parseInt(str3);
-
-    Circle c = new Circle(x, y, r);
-    c.show();
+    public SamplePanel()
+    {
+      for(int i=0; i<30; i++){
+        h[i] = new Hook();
+      }
+    }
+    public void paint(Graphics g)
+    {
+      if(h[0] != null){
+        for(int i=0; i<30; i++){
+          h[i].draw(g);
+        }
+      }
+    }
   }
 }

@@ -1,11 +1,13 @@
 import java.awt.*;
 
-public class Rectangle implements Shape
+public class Char implements Shape
 {
+  private String c = "円";
+
   private int x;
   private int y;
 
-  public Rectangle(int x, int y)
+  public Char(int x, int y)
   {
     this.x = x;
     this.y = y;
@@ -15,6 +17,6 @@ public class Rectangle implements Shape
   public void draw(Graphics g)
   {
     g.setColor(Color.black);
-    g.drawRect(getX(), getY(), 10, 10);
+    g.drawString(c, x, y);
   }
 }

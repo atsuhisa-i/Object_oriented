@@ -22,8 +22,8 @@ public class Sample2 extends JFrame
   }
   public class SamplePanel extends JPanel
   {
-    private ArrayList<FilledCircle> fccirclelist
-      = new ArrayList<FilledCircle>();
+    private ArrayList<Shape> shapelist
+      = new ArrayList<Shape>();
     
     public SamplePanel()
     {
@@ -32,18 +32,18 @@ public class Sample2 extends JFrame
     public void paint(Graphics g)
     {
       super.paint(g);
-      Iterator<FilledCircle> it = fccirclelist.iterator();
+      Iterator<Shape> it = shapelist.iterator();
       while(it.hasNext()){
-        FilledCircle fc = it.next();
-        fc.draw(g);
+        Shape sh = it.next();
+        sh.draw(g);
       }
     }
     public class SampleMouseListener extends MouseAdapter
     {
       public void mousePressed(MouseEvent e)
       {
-        fccirclelist.add(
-          new FilledCircle(e.getX(), e.getY()));
+        shapelist.add(new ShadeCircle(
+          new Circle(e.getX(), e.getY())));
         repaint();
       }
     }

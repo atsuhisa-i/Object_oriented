@@ -1,13 +1,18 @@
 import java.awt.*;
 
-public class ShadeCircle extends Circle
+public class ShadeCircle implements Shape
 {
-  public ShadeCircle(int x, int y)
+  private Shape s;
+
+  public ShadeCircle(Shape s)
   {
-    super(x, y);
+    this.s = s;
   }
-  public void drawShade(Graphics g)
+  public int getX(){return s.getX();}
+  public int getY(){return s.getY();}
+  public void draw(Graphics g)
   {
+    s.draw(g);
     g.setColor(Color.gray);
     g.drawOval(getX()+5, getY()+5, 10, 10);
   }

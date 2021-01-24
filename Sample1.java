@@ -37,7 +37,6 @@ public class Sample1 extends JFrame
         = shadecirclelist.iterator();
       while(it.hasNext()){
         ShadeCircle sc = it.next();
-        sc.draw(g);
         sc.drawShade(g);
       }
     }
@@ -45,8 +44,8 @@ public class Sample1 extends JFrame
     {
       public void mousePressed(MouseEvent e)
       {
-        shadecirclelist.add(
-          new ShadeCircle(e.getX(), e.getY()));
+        shadecirclelist.add(new ShadeCircle(
+          new Circle(e.getX(),e.getY())));
         repaint();
       }
     }

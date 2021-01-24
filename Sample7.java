@@ -6,7 +6,6 @@ import javax.swing.*;
 public class Sample7 extends JFrame
 {
   private SamplePanel sp;
-  private int state;
 
   public static void main(String args[])
   {
@@ -19,13 +18,12 @@ public class Sample7 extends JFrame
     setSize(300, 300);
     sp = new SamplePanel();
     add(sp, BorderLayout.CENTER);
-    state = Shape.CIRCLE;
     setVisible(true);
   }
   public class SamplePanel extends JPanel
   {
-    private ArrayList<Shape> shapelist
-      = new ArrayList<Shape>();
+    private ArrayList<Circle> circlelist
+      = new ArrayList<Circle>();
     
     public SamplePanel()
     {
@@ -34,29 +32,17 @@ public class Sample7 extends JFrame
     public void paint(Graphics g)
     {
       super.paint(g);
-      Iterator<Shape> it = shapelist.iterator();
+      Iterator<Circle> it = circlelist.iterator();
       while(it.hasNext()){
-        Shape sh = it.next();
-        sh.draw(g);
+        Circle c = it.next();
+        c.draw(g);
       }
     }
     public class SampleMouseListener extends MouseAdapter
     {
       public void mousePressed(MouseEvent e)
       {
-        if(state == Shape.CIRCLE){
-          shapelist.add(new Circle(e.getX(), e.getY()));
-          state = Shape.RECTANGLE;
-        }
-        else if(state == Shape.RECTANGLE){
-          shapelist.add(
-            new Rectangle(e.getX(),e.getY()));
-          state = Shape.LINE;
-        }
-        else{
-          shapelist.add(new Line(e.getX(), e.getY()));
-          state = Shape.CIRCLE;
-        }
+        circlelist.add(new Adapter(e.getX(), e.getY()));
         repaint();
       }
     }
