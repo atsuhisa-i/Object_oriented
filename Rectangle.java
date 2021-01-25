@@ -14,7 +14,6 @@ public class Rectangle implements Shape
   public int getY(){return y;}
   public void draw(Graphics g)
   {
-    g.setColor(Color.black);
-    g.drawRect(getX(), getY(), 10, 10);
+    g.drawRect(x, y, 10, 10);
   }
 }
