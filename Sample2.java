@@ -1,15 +1,17 @@
 import java.util.*;
-import java.text.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.tree.*;
-import javax.swing.event.*;
 
-public class Sample2 extends JFrame
+
+public class Sample2 extends JFrame implements ActionListener
 {
-  private JTree tr;
-  private Node root;
+  private SamplePanel sp;
+  private JButton bt[] = new JButton[3];
+  private JToolBar tl;
+  private Icon ic;
+  private Shape sh;
+  private int state;
 
   public static void main(String args[])
   {
@@ -18,72 +20,62 @@ public class Sample2 extends JFrame
   public Sample2()
   {
     super("サンプル");
-    Section s1 = new Section("Company");
-    Section s2 = new Section("Trade");
-    Section s3 = new Section("Accounting");
+    sp = new SamplePanel();
+    tl = new JToolBar();
 
-    Person p1 = new Person("Sato");
-    Person p2 = new Person("Takahashi");
-    Person p3 = new Person("Suzuki");
+    for(int i=0; i<bt.length; i++){
+      ic = new ImageIcon(Shape.name[i] + ".gif");
+      bt[i] = new JButton(ic);
+      bt[i].setToolTipText(Shape.name[i]);
+      bt[i].addActionListener(this);
+      tl.add(bt[i]);
+    }
 
-    s1.add(s2);
-    s1.add(s3);
-    s2.add(p1);
-    s2.add(p2);
-    s3.add(p3);
-
-    root = s1;
-
-    tr = new JTree(new MyTreeModel());
-
-    add(tr, BorderLayout.CENTER);
+    add(tl, BorderLayout.NORTH);
+    add(sp, BorderLayout.CENTER);
 
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(300, 300);
     setVisible(true);
   }
-  public class MyTreeModel implements TreeModel
+  public void actionPerformed(ActionEvent e)
   {
-    public MyTreeModel(){}
-    public Object getRoot()
-    {
-      return root;
-    }
-    public Object getChild(Object parent, int index)
-    {
-      Node p = (Node)parent;
-      Vector<Node> children = p.getChildren();
-      return children.elementAt(index);
-    }
-    public int getChildCount(Object parent)
-    {
-      Node p = (Node)parent;
-      Vector<Node> children = p.getChildren();
-      return children.size();
-    }
-    public int getIndexOfChild(Object parent, Object child)
-    {
-      Node p = (Node)parent;
-      Vector<Node> children = p.getChildren();
-      Iterator<Node> it = children.iterator();
+    JButton tmp = (JButton) e.getSource();
 
-      for(int i=0; it.hasNext(); i++){
-        Node nn = it.next();
-        if(nn.equals(child)){
-          return i;
-        }
-      }
-      return -1;
-    }
-    public boolean isLeaf(Object node)
+    if(tmp == bt[0])
+      state = Shape.CIRCLE;
+    else if(tmp == bt[1])
+      state = Shape.RECTANGLE;
+    else if(tmp == bt[2])
+      state = Shape.LINE;
+  }
+  public class SamplePanel extends JPanel
+  {
+    private ArrayList<Shape> shapelist
+      = new ArrayList<Shape>();
+    
+    public SamplePanel()
     {
-      if(node instanceof Person)
-        return true;
-      else
-        return false;
+      addMouseListener(new SampleMouseListener());
     }
-    public void addTreeModelListener(TreeModelListener l){}
-    public void removeTreeModelListener(TreeModelListener l){}
-    public void valueForPathChanged(TreePath path, Object newValue){}
+    public void paint(Graphics g)
+    {
+      super.paint(g);
+      Iterator<Shape> it = shapelist.iterator();
+      while(it.hasNext()){
+        Shape sh = it.next();
+        sh.draw(g);
+      }
+    }
+    public class SampleMouseListener extends MouseAdapter
+    {
+      public void mousePressed(MouseEvent e)
+      {
+        ShapeFactory sf = new ShapeFactory();
+        Shape sh = sf.createShape(state, e.getX(), e.getY());
+        shapelist.add(sh);
+        repaint();
+      }
+    }
   }
 }

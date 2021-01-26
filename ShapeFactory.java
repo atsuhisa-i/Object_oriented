@@ -1,18 +1,20 @@
+import java.lang.reflect.*;
+
 public class ShapeFactory
 {
   private Shape sh;
 
-  public Shape createShape(int state, int x, int y)
+  Shape createShape(int state, int x, int y)
   {
-    if(state == Shape.CIRCLE){
-      sh = new Circle(x, y);
+    try{
+      Class<?> cl = Class.forName(Shape.name[state]);
+      Class<?> param[] = {int.class, int.class};
+      Object init[] = {x, y};
+      Constructor<?> cn = cl.getConstructor(param);
+      sh = (Shape)cn.newInstance(init);
     }
-    else if(state == Shape.RECTANGLE){
-      sh = new Rectangle(x, y);
-    }
-    else{
-      sh = new Line(x, y);
-    }
+    catch(Exception e){}
+
     return sh;
   }
 }
