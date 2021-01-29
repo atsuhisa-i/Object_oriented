@@ -11,5 +11,6 @@ public class CutCommand implements Command
   public void execute()
   {
     ta.cut();
+    ta.insert("<<Cut>>", ta.getCaret().getDot());
   }
 }

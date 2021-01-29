@@ -10,6 +10,8 @@ public class PasteCommand implements Command
   }
   public void execute()
   {
+    ta.insert("<<---", ta.getCaret().getDot());
     ta.paste();
+    ta.insert("--->>", ta.getCaret().getDot());
   }
 }

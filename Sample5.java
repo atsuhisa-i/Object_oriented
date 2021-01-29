@@ -1,11 +1,14 @@
-import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Sample5 extends JFrame
+public class Sample5 extends JFrame implements ActionListener
 {
-  private SamplePanel sp;
+  private JButton bt[] = new JButton[3];
+  private JToolBar tl;
+  private Icon ic;
+  private JTextArea ta;
+  private String name[] = {"Cut", "Copy", "Paste"};
 
   public static void main(String args[])
   {
@@ -14,37 +17,36 @@ public class Sample5 extends JFrame
   public Sample5()
   {
     super("サンプル");
+    ta = new JTextArea();
+    ta.setLineWrap(true);
+    tl = new JToolBar();
+    for(int i=0; i<bt.length; i++){
+      ic = new ImageIcon(name[i] + ".gif");
+      bt[i] = new JButton(ic);
+      tl.add(bt[i]);
+    }
+
+    add(tl, BorderLayout.NORTH);
+    add(ta, BorderLayout.CENTER);
+
+    for(int i=0; i<bt.length; i++){
+      bt[i].addActionListener(this);
+    }
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(300, 300);
-    sp = new SamplePanel();
-    add(sp, BorderLayout.CENTER);
     setVisible(true);
   }
-  public class SamplePanel extends JPanel
+  public void actionPerformed(ActionEvent e)
   {
-    private ArrayList<Shape> shapelist
-      = new ArrayList<Shape>();
-    
-    public SamplePanel()
-    {
-      addMouseListener(new SampleMouseListener());
-    }
-    public void paint(Graphics g)
-    {
-      super.paint(g);
-      Iterator<Shape> it = shapelist.iterator();
-      while(it.hasNext()){
-        Shape sh = it.next();
-        sh.draw(g);
-      }
-    }
-    public class SampleMouseListener extends MouseAdapter
-    {
-      public void mousePressed(MouseEvent e)
-      {
-        shapelist.add(new Hook(e.getX(), e.getY()));
-        repaint();
-      }
-    }
+    JButton tmp = (JButton) e.getSource();
+    Command c;
+
+    if(tmp == bt[0])
+      c = new CutCommand(ta);
+    else if(tmp == bt[1])
+      c = new CopyCommand(ta);
+    else
+      c = new PasteCommand(ta);
+    c.execute();
   }
 }
