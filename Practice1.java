@@ -2,9 +2,13 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Practice1 extends JFrame
+public class Practice1 extends JFrame implements ActionListener
 {
-  private SamplePanel sp;
+  private JButton bt[] = new JButton[3];
+  private JToolBar tl;
+  private Icon ic;
+  private JTextArea ta;
+  private String name[] = {"Cut", "Copy", "Paste"};
 
   public static void main(String args[])
   {
@@ -13,26 +17,37 @@ public class Practice1 extends JFrame
   public Practice1()
   {
     super("サンプル");
+    ta = new JTextArea();
+    ta.setLineWrap(true);
+    tl = new JToolBar();
+
+    for(int i=0; i<bt.length; i++){
+      ic = new ImageIcon(name[i] + ".gif");
+      bt[i] = new JButton(ic);
+      tl.add(bt[i]);
+    }
+
+    add(tl, BorderLayout.NORTH);
+    add(ta, BorderLayout.CENTER);
+
+    for(int i=0; i<bt.length; i++){
+      bt[i].addActionListener(this);
+    }
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(300, 300);
-    sp = new SamplePanel();
-    add(sp, BorderLayout.CENTER);
     setVisible(true);
   }
-  public class SamplePanel extends JPanel
+  public void actionPerformed(ActionEvent e)
   {
-    StringLabel st;
-    ShadeLabel sh;
+    JButton tmp = (JButton) e.getSource();
+    Command c;
 
-    public SamplePanel()
-    {
-      st = new StringLabel("Hello", 100,100);
-      sh = new ShadeLabel(new StringLabel("GoodBye", 200, 200));
-    }
-    public void paint(Graphics g)
-    {
-      st.draw(g);
-      sh.draw(g);
-    }
+    if(tmp == bt[0])
+      c = new CutCommand(ta);
+    else if(tmp == bt[1])
+      c = new CopyCommand(ta);
+    else
+      c = new PasteCommand(ta);
+    c.execute();
   }
 }

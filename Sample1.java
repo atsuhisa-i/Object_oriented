@@ -1,14 +1,17 @@
 import java.util.*;
-import java.text.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
 
-public class Sample1 extends JFrame
+public class Sample1 extends JFrame implements ActionListener
 {
-  private Vector<String> nl = new Vector<String>();
-  private JList ls;
+  private SamplePanel sp;
+  private JButton bt[] = new JButton[3];
+  private JToolBar tl;
+  private Icon ic;
+  private Shape sh;
+  private int state;
 
   public static void main(String args[])
   {
@@ -17,42 +20,62 @@ public class Sample1 extends JFrame
   public Sample1()
   {
     super("サンプル");
+    sp = new SamplePanel();
+    tl = new JToolBar();
 
-    Section s1 = new Section("Company");
-    Section s2 = new Section("Trade");
-    Section s3 = new Section("Accounting");
+    for(int i=0; i<bt.length; i++){
+      ic = new ImageIcon(Shape.name[i] + ".gif");
+      bt[i] = new JButton(ic);
+      bt[i].setToolTipText(Shape.name[i]);
+      bt[i].addActionListener(this);
+      tl.add(bt[i]);
+    }
 
-    Person p1 = new Person("Sato");
-    Person p2 = new Person("Takahashi");
-    Person p3 = new Person("Suzuki");
-
-    s1.add(s2);
-    s1.add(s3);
-    s2.add(p1);
-    s2.add(p2);
-    s3.add(p3);
-
-    Node root = s1;
-
-    walkTree(root);
-
-    ls = new JList<String>(nl);
-
-    add(ls, BorderLayout.CENTER);
+    add(tl, BorderLayout.NORTH);
+    add(sp, BorderLayout.CENTER);
 
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(300, 300);
     setVisible(true);
   }
-  public void walkTree(Node n)
+  public void actionPerformed(ActionEvent e)
   {
-    Vector<Node> children = n.getChildren();
-    if(children == null) return;
-    Iterator<Node> it = children.iterator();
-    while(it.hasNext()){
-      Node nn = it.next();
-      nl.addElement(nn.toString());
-      walkTree(nn);
+    JButton tmp = (JButton) e.getSource();
+
+    if(tmp == bt[0])
+      state = Shape.CIRCLE;
+    else if(tmp == bt[1])
+      state = Shape.RECTANGLE;
+    else if(tmp == bt[2])
+      state = Shape.LINE;
+  }
+  public class SamplePanel extends JPanel
+  {
+    private ArrayList<Shape> shapelist
+      = new ArrayList<Shape>();
+    
+    public SamplePanel()
+    {
+      addMouseListener(new SampleMouseListener());
+    }
+    public void paint(Graphics g)
+    {
+      super.paint(g);
+      Iterator<Shape> it = shapelist.iterator();
+      while(it.hasNext()){
+        Shape sh = it.next();
+        sh.draw(g);
+      }
+    }
+    public class SampleMouseListener extends MouseAdapter
+    {
+      public void mousePressed(MouseEvent e)
+      {
+        ShapeFactory sf = new ShapeFactory();
+        Shape sh = sf.createShape(state, e.getX(), e.getY());
+        shapelist.add(sh);
+        repaint();
+      }
     }
   }
 }
