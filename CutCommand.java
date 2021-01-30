@@ -1,16 +1,16 @@
 import javax.swing.*;
+import javax.swing.text.*;
 
 public class CutCommand implements Command
 {
-  private JTextArea ta;
+  private JTextComponent tc;
 
-  public CutCommand(JTextArea ta)
+  public CutCommand(JTextComponent tc)
   {
-    this.ta = ta;
+    this.tc = tc;
   }
   public void execute()
   {
-    ta.cut();
-    ta.insert("<<Cut>>", ta.getCaret().getDot());
+    tc.cut();
   }
 }

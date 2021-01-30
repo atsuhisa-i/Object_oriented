@@ -1,15 +1,16 @@
 import javax.swing.*;
+import javax.swing.text.*;
 
 public class CopyCommand implements Command
 {
-  private JTextArea ta;
+  private JTextComponent tc;
 
-  public CopyCommand(JTextArea ta)
+  public CopyCommand(JTextComponent tc)
   {
-    this.ta = ta;
+    this.tc = tc;
   }
   public void execute()
   {
-    ta.copy();
+    tc.copy();
   }
 }

@@ -1,17 +1,16 @@
 import javax.swing.*;
+import javax.swing.text.*;
 
 public class PasteCommand implements Command
 {
-  private JTextArea ta;
+  private JTextComponent tc;
 
-  public PasteCommand(JTextArea ta)
+  public PasteCommand(JTextComponent tc)
   {
-    this.ta = ta;
+    this.tc = tc;
   }
   public void execute()
   {
-    ta.insert("<<---", ta.getCaret().getDot());
-    ta.paste();
-    ta.insert("--->>", ta.getCaret().getDot());
+    tc.paste();
   }
 }
