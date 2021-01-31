@@ -1,60 +1,33 @@
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.io.*;
 
-public class Sample6 extends JFrame
+public class Sample6
 {
-  private SamplePanel sp;
-  private int state;
-
   public static void main(String args[])
   {
-    Sample6 sm = new Sample6();
-  }
-  public Sample6()
-  {
-    super("サンプル");
-    setDefaultCloseOperation(EXIT_ON_CLOSE);
-    setSize(300, 300);
-    sp = new SamplePanel();
-    add(sp, BorderLayout.CENTER);
-    setVisible(true);
-  }
-  public class SamplePanel extends JPanel
-  {
-    private ArrayList<Shape> shapelist
-      = new ArrayList<Shape>();
-    
-    public SamplePanel()
-    {
-      addMouseListener(new SampleMouseListener());
-    }
-    public void paint(Graphics g)
-    {
-      super.paint(g);
-      Iterator<Shape> it = shapelist.iterator();
-      while(it.hasNext()){
-        Shape sh = it.next();
-        sh.draw(g);
+    String content = null;
+    try{
+      BufferedReader br = new BufferedReader(
+        new FileReader("Yasacii.txt"));
+      String str;
+      StringBuffer sb = new StringBuffer();
+      while((str = br.readLine()) !=null){
+        sb.append(str);
       }
+      content = sb.toString();
+      br.close();
+    }catch(IOException e){}
+
+    Factory f = new DetailFactory();
+
+    String s = f.createPage(content);
+    try{
+      PrintWriter pw = new PrintWriter
+      (new BufferedWriter(new FileWriter("Page.html")));
+
+      pw.println(s);
+      System.out.println("ファイルに書き込みました。");
+      pw.close();
     }
-    public class SampleMouseListener extends MouseAdapter
-    {
-      public void mousePressed(MouseEvent e)
-      {
-        if(state == Shape.CIRCLE){
-          shapelist.add(new FrameMark(
-            new Circle(e.getX(), e.getY())));
-          state = Shape.RECTANGLE;
-        }
-        else{
-          shapelist.add(new ShadeMark(
-            new Rectangle(e.getX(), e.getY())));
-          state = Shape.CIRCLE;
-        }
-        repaint();
-      }
-    }
+    catch(IOException e){}
   }
 }
