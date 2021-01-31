@@ -1,9 +1,7 @@
-import java.awt.*;
-import javax.swing.*;
-
 public interface Factory
 {
-  public JLabel createTitle();
-  public JTextArea createMain(String content);
-  public JLabel createOption();
+  public String createPage(String content);
+  public String createHeader();
+  public String createTitle();
+  public String createBody(String content);
 }
