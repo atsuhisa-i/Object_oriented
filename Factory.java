@@ -1,7 +1,8 @@
 public interface Factory
 {
-  public String createPage(String content);
+  public String createPage();
   public String createHeader();
   public String createTitle();
-  public String createBody(String content);
+  public String createCal();
+  public String createBody();
 }
