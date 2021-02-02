@@ -1,8 +1,8 @@
+import java.io.*;
+
 public interface Factory
 {
-  public String createPage();
+  public String createPage(File f);
   public String createHeader();
-  public String createTitle();
-  public String createCal();
   public String createBody();
 }
