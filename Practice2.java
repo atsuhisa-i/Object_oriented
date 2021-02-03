@@ -1,52 +1,29 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.io.*;
 
-public class Practice2 extends JFrame implements ActionListener
+public class Practice2
 {
-  private JButton bt[] = new JButton[3];
-  private JToolBar tl;
-  private Icon ic;
-  private JTextField tf;
-  private String name[] = {"Cut", "Copy", "Paste"};
-
   public static void main(String args[])
   {
-    Practice2 pr = new Practice2();
-  }
-  public Practice2()
-  {
-    super("サンプル");
-    tf = new JTextField();
-    tl = new JToolBar();
+    File fl = new File("/Users/atsuhisaiino/Desktop");
 
-    for(int i=0; i<bt.length; i++){
-      ic = new ImageIcon(name[i] + ".gif");
-      bt[i] = new JButton(ic);
-      tl.add(bt[i]);
+    Factory f1 = new SimpleFactory();
+    Factory f2 = new DetailFactory();
+    String s1 = f1.createPage(fl);
+    String s2 = f2.createPage(fl);
+    try{
+      PrintWriter pw1 = new PrintWriter
+      (new BufferedWriter(new FileWriter("Page1.html")));
+
+      PrintWriter pw2 = new PrintWriter
+      (new BufferedWriter(new FileWriter("Page2.html")));
+
+      pw1.println(s1);
+      pw2.println(s2);
+
+      System.out.println("ファイルに書き込みました。");
+      pw1.close();
+      pw2.close();
     }
-
-    add(tl, BorderLayout.NORTH);
-    add(tf, BorderLayout.CENTER);
-
-    for(int i=0; i<bt.length; i++){
-      bt[i].addActionListener(this);
-    }
-    setDefaultCloseOperation(EXIT_ON_CLOSE);
-    pack();
-    setVisible(true);
-  }
-  public void actionPerformed(ActionEvent e)
-  {
-    JButton tmp = (JButton) e.getSource();
-    Command c;
-
-    if(tmp == bt[0])
-      c = new CutCommand(tf);
-    else if(tmp == bt[1])
-      c = new CopyCommand(tf);
-    else
-      c = new PasteCommand(tf);
-    c.execute();
+    catch(IOException e){}
   }
 }

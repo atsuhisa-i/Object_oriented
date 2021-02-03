@@ -1,15 +1,10 @@
+import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Sample4 extends JFrame implements ActionListener
+public class Sample4 extends JFrame
 {
-  private JButton bt[] = new JButton[3];
-  private JToolBar tl;
-  private Icon ic;
-  private JTextArea ta;
-  private String name[] = {"Cut", "Copy", "Paste"};
-
   public static void main(String args[])
   {
     Sample4 sm = new Sample4();
@@ -17,36 +12,30 @@ public class Sample4 extends JFrame implements ActionListener
   public Sample4()
   {
     super("サンプル");
-    ta = new JTextArea();
-    ta.setLineWrap(true);
-    tl = new JToolBar();
-    for(int i=0; i<bt.length; i++){
-      ic = new ImageIcon(name[i] + ".gif");
-      bt[i] = new JButton(ic);
-      tl.add(bt[i]);
-    }
+    String content = null;
+    try{
+      BufferedReader br = new BufferedReader(
+        new FileReader("Yasacii.txt"));
+      String str;
+      StringBuffer sb = new StringBuffer();
+      while((str = br.readLine()) != null){
+        sb.append(str);
+      }
+      content = sb.toString();
+      br.close();
+    }catch(IOException e){}
 
-    add(tl, BorderLayout.NORTH);
-    add(ta, BorderLayout.CENTER);
+    Factory f = new SeniorFactory();
 
-    for(int i=0; i<bt.length; i++){
-      bt[i].addActionListener(this);
-    }
+    JLabel title = f.createTitle();
+    JTextArea body = f.createMain(content);
+    JLabel option = f.createOption();
+
+    add(title, BorderLayout.NORTH);
+    add(body, BorderLayout.CENTER);
+    add(option, BorderLayout.SOUTH);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(300, 300);
     setVisible(true);
-  }
-  public void actionPerformed(ActionEvent e)
-  {
-    JButton tmp = (JButton) e.getSource();
-    Command c;
-
-    if(tmp == bt[0])
-      c = new CutCommand(ta);
-    else if(tmp == bt[1])
-      c = new CopyCommand(ta);
-    else
-      c = new PasteCommand(ta);
-    c.execute();
   }
 }
