@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 import java.text.*;
 
-public class SimpleFactory implements Factory
+class SimpleFactory implements Factory
 {
   private File fl;
 
@@ -46,7 +46,7 @@ public class SimpleFactory implements Factory
   public String createFileList()
   {
     StringBuffer sb = new StringBuffer();
-    File[] list = fl.listFiles();
+    File[] list = fl.listFiles(new ImageFileFilter());
     for(int i=0; i<list.length; i++){
       File f = list[i];
       sb.append(createItem(f));

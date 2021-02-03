@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 import java.text.*;
 
-public class DetailFactory implements Factory
+class DetailFactory implements Factory
 {
   private File fl;
 
@@ -46,7 +46,7 @@ public class DetailFactory implements Factory
   public String createFileList()
   {
     StringBuffer sb = new StringBuffer();
-    File[] list = fl.listFiles();
+    File[] list = fl.listFiles(new ImageFileFilter());
     for(int i=0; i<list.length; i++){
       File f = list[i];
       sb.append(createItem(f));
@@ -57,6 +57,12 @@ public class DetailFactory implements Factory
   {
     StringBuffer sb = new StringBuffer();
     sb.append("<tr>");
+    sb.append("<td width=\"100\">");
+    sb.append("<img src=\"");
+    sb.append(f.getAbsolutePath());
+
+    sb.append("\">");
+    sb.append("</td>");
     sb.append("<td>");
     sb.append(f.getName());
     sb.append("</td>");
