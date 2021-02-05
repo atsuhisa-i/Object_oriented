@@ -1,10 +1,14 @@
-import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.*;
 import javax.swing.*;
 
 public class Sample3 extends JFrame
 {
+  private JLabel lb1, lb2;
+  private Image sourceImage, destImage;
+  private JPanel pn;
+
   public static void main(String args[])
   {
     Sample3 sm = new Sample3();
@@ -12,31 +16,28 @@ public class Sample3 extends JFrame
   public Sample3()
   {
     super("サンプル");
-    String content = null;
-    try{
-      BufferedReader br = new BufferedReader(
-        new FileReader("Yasacii.txt"));
-      String str;
-      StringBuffer sb = new StringBuffer();
-      while((str = br.readLine()) != null){
-        sb.append(str);
-      }
-      content = sb.toString();
-      br.close();
-    }catch(IOException e){}
+    
+    ImageIcon ic1 = new ImageIcon("rose.jpg");
+    sourceImage = ic1.getImage();
+    int w = sourceImage.getWidth(this);
+    int h = sourceImage.getHeight(this);
 
-    Factory f = new JuniorFactory();
+    ImageBuilder ib = new RedImageBuilder();
+    Manager mn = new Manager(ib);
+    mn.createImage(sourceImage, w, h);
+    destImage = ib.getImage();
 
-    JLabel title = f.createTitle();
-    JTextArea body = f.createMain(content);
-    JLabel option = f.createOption();
+    ImageIcon ic2 = new ImageIcon(destImage);
+    lb1 = new JLabel(ic1);
+    lb2 = new JLabel(ic2);
+    pn = new JPanel(new GridLayout(1,2));
 
-    add(title, BorderLayout.NORTH);
-    add(body, BorderLayout.CENTER);
-    add(option, BorderLayout.SOUTH);
+    pn.add(lb1);
+    pn.add(lb2);
+    add(pn);
 
     setDefaultCloseOperation(EXIT_ON_CLOSE);
-    setSize(300, 300);
+    pack();
     setVisible(true);
   }
 }

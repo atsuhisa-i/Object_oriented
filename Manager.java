@@ -1,16 +1,17 @@
+import java.awt.*;
+
 public class Manager
 {
-  private FrameBuilder fb;
+  private ImageBuilder ib;
 
-  public Manager(FrameBuilder fb)
+  public Manager(ImageBuilder ib)
   {
-    this.fb = fb;
+    this.ib = ib;
   }
-  public void buildFrame()
+  public void createImage(Image img, int w, int h)
   {
-    fb.createFrame();
-    fb.createComponents();
-    fb.addListeners();
-    fb.setFrame();
+    ib.setImage(img, w, h);
+    ib.grabPixel();
+    ib.convert();
   }
 }
