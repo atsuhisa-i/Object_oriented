@@ -37,6 +37,7 @@ public class Manager
       s = "";
     lb.setText("Cut:" + s);
     ta.cut();
+    ta.insert("<<Cut>>", ta.getCaret().getDot());
   }
   public void copy()
   {
@@ -50,7 +51,9 @@ public class Manager
   {
     String s = ta.getSelectedText();
     lb.setText("Paste.");
+    ta.insert("<<---", ta.getCaret().getDot());
     ta.paste();
+    ta.insert("--->>", ta.getCaret().getDot());
   }
   public void caretUpdate()
   {

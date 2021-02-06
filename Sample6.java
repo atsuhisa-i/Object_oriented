@@ -1,33 +1,42 @@
-import java.io.*;
+import java.awt.*;
+import javax.swing.*;
 
-public class Sample6
+public class Sample6 extends JFrame
 {
   public static void main(String args[])
   {
-    String content = null;
-    try{
-      BufferedReader br = new BufferedReader(
-        new FileReader("Yasacii.txt"));
-      String str;
-      StringBuffer sb = new StringBuffer();
-      while((str = br.readLine()) !=null){
-        sb.append(str);
-      }
-      content = sb.toString();
-      br.close();
-    }catch(IOException e){}
+    Sample6 sm = new Sample6();
+  }
+  public Sample6()
+  {
+    super("サンプル");
+    JToolBar tl = new JToolBar();
 
-    Factory f = new DetailFactory();
+    Manager mn = new Manager();
 
-    String s = f.createPage(content);
-    try{
-      PrintWriter pw = new PrintWriter
-      (new BufferedWriter(new FileWriter("Page.html")));
+    MyTextArea ta = new MyTextArea(mn);
+    ta.setLineWrap(true);
 
-      pw.println(s);
-      System.out.println("ファイルに書き込みました。");
-      pw.close();
-    }
-    catch(IOException e){}
+    MyLabel lb = new MyLabel(mn);
+    CutButton tb = new CutButton(mn);
+    CopyButton cb = new CopyButton(mn);
+    PasteButton pb = new PasteButton(mn);
+
+    mn.registerCutButton(tb);
+    mn.registerCopyButton(cb);
+    mn.registerPasteButton(pb);
+    mn.registerLabel(lb);
+    mn.registerTextArea(ta);
+
+    tl.add(tb);
+    tl.add(cb);
+    tl.add(pb);
+    add(tl, BorderLayout.NORTH);
+    add(ta, BorderLayout.CENTER);
+    add(lb, BorderLayout.SOUTH);
+
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
+    setSize(300, 300);
+    setVisible(true);
   }
 }
