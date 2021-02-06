@@ -1,16 +1,13 @@
 import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
-public abstract class MyLabel
+public class MyLabel extends JLabel
 {
-  private int x, y;
+  private Manager mn;
 
-  public MyLabel(){}
-  public MyLabel(int x, int y)
+  public MyLabel(Manager m)
   {
-    this.x = x;
-    this.x = y;
+    mn = m;
   }
-  public int getX(){return x;}
-  public int getY(){return y;}
-  public abstract void draw(Graphics g);
 }
