@@ -1,13 +1,18 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.*;
 import javax.swing.*;
 
-public class Sample4 extends JFrame
+public class Sample4 extends JFrame implements ActionListener
 {
-  private JLabel lb1, lb2;
-  private Image sourceImage, destImage;
-  private JPanel pn;
+  private BoldBarGraph bbg;
+  private ThinBarGraph tbg;
+  private Vector<Observer> obs;
+  private JList<Integer> ls;
+  private JScrollPane sp;
+  private JButton bt;
 
   public static void main(String args[])
   {
@@ -16,29 +21,58 @@ public class Sample4 extends JFrame
   public Sample4()
   {
     super("サンプル");
-    
-    ImageIcon ic1 = new ImageIcon("rose.jpg");
-    sourceImage = ic1.getImage();
-    int w = sourceImage.getWidth(this);
-    int h = sourceImage.getHeight(this);
+    obs = new Vector<Observer>();
+    bbg = new BoldBarGraph();
+    tbg = new ThinBarGraph();
+    addObserver(bbg);
+    addObserver(tbg);
 
-    ImageBuilder ib = new AlphaImageBuilder();
-    Manager mn = new Manager(ib);
-    mn.createImage(sourceImage, w, h);
-    destImage = ib.getImage();
+    ls = new JList<Integer>();
+    sp = new JScrollPane(ls);
+    bt = new JButton("読込");
 
-    ImageIcon ic2 = new ImageIcon(destImage);
+    add(sp, BorderLayout.CENTER);
+    add(bt, BorderLayout.SOUTH);
 
-    lb1 = new JLabel(ic1);
-    lb2 = new JLabel(ic2);
-    pn = new JPanel(new GridLayout(1,2));
-
-    pn.add(lb1);
-    pn.add(lb2);
-    add(pn);
+    bt.addActionListener(this);
 
     setDefaultCloseOperation(EXIT_ON_CLOSE);
-    pack();
+    setSize(400, 200);
     setVisible(true);
+    bbg.setVisible(true);
+    tbg.setVisible(true);
+  }
+  void addObserver(Observer o)
+  {
+    obs.add(o);
+  }
+  void notify(Vector<Integer> d)
+  {
+    Iterator<Observer> it = obs.iterator();
+    while(it.hasNext()){
+      Observer o = it.next();
+      o.update(d);
+    }
+  }
+  public void actionPerformed(ActionEvent e)
+  {
+    JFileChooser fc = new JFileChooser();
+    try{
+      int res = fc.showOpenDialog(this);
+      if(res == JFileChooser.APPROVE_OPTION){
+        File fl = fc.getSelectedFile();
+        BufferedReader br = new BufferedReader(
+          new FileReader(fl));
+
+          Vector<Integer> data = new Vector<Integer>();
+          String str;
+          while((str = br.readLine()) != null){
+            data.add(Integer.parseInt(str));
+          }
+          br.close();
+          ls.setListData(data);
+          notify(data);
+      }
+    }catch(Exception ex){}
   }
 }
