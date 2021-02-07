@@ -1,21 +1,21 @@
-public class Person
-{
-  private String name;
-  private int age;
-  private double weight;
-  private double height;
+import java.util.*;
 
-  public Person(String n, int a, double w, double h)
+public class Person implements Node
+{
+  private String nodeName;
+
+  public Person(String s)
   {
-    name = n;
-    age = a;
-    weight = w;
-    height = h;
+    nodeName = s;
   }
-  public String getName(){return name;}
-  public int getAge(){return age;}
-  public double getWeight(){return weight;}
-  public double getHeight(){return height;}
+  public String getNodeName()
+  {
+    return nodeName;
+  }
+  public Vector<Node> getChildren()
+  {
+    return null;
+  }
   public void accept(Visitor v)
   {
     v.visit(this);
