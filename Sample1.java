@@ -1,13 +1,12 @@
-import java.io.*;
+import java.util.*;
+import java.text.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Sample1 extends JFrame implements ActionListener
+public class Sample1 extends JFrame
 {
-  private JTextArea ta;
-  private JButton bt;
-  private JPanel pn;
+  private JList ls;
 
   public static void main(String args[])
   {
@@ -16,48 +15,31 @@ public class Sample1 extends JFrame implements ActionListener
   public Sample1()
   {
     super("サンプル");
-    String content = null;
-    try{
-      BufferedReader br = new BufferedReader(
-        new FileReader("Yasacii.txt"));
-      String str;
-      StringBuffer sb = new StringBuffer();
-      while((str = br.readLine()) != null){
-        sb.append(str);
-      }
-      content = sb.toString();
-      br.close();
-    }catch(IOException e){}
+    
+    Vector<Person> personlist = new Vector<Person>();
+    Person p1 = new Person("Suzuki", 30, 50.5, 170.3);
+    Person p2 = new Person("sato", 18, 58.5, 175.1);
+    Person p3 = new Person("Takahashi", 26, 51.3, 170);
 
-    ta = new JTextArea(content);
-    ta.setLineWrap(true);
-    bt = new JButton("再読込");
-    pn = new JPanel();
+    personlist.add(p1);
+    personlist.add(p2);
+    personlist.add(p3);
 
-    pn.add(bt);
-    add(ta, BorderLayout.CENTER);
-    add(pn, BorderLayout.SOUTH);
+    Visitor v = new WeightVisitor();
 
-    bt.addActionListener(this);
+    Iterator<Person> it = personlist.iterator();
+    while(it.hasNext()){
+      Person p = it.next();
+      p.accept(v);
+    }
+    Vector<String> nl = v.getList();
+
+    ls = new JList<String>(nl);
+
+    add(ls, BorderLayout.CENTER);
 
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(300, 300);
     setVisible(true);
-  }
-  public void actionPerformed(ActionEvent e)
-  {
-    String content = null;
-    try{
-      BufferedReader br = new BufferedReader(
-        new FileReader("Yasacii.txt"));
-      String str;
-      StringBuffer sb = new StringBuffer();
-      while((str = br.readLine()) != null){
-        sb.append(str);
-      }
-      content = sb.toString();
-      br.close();
-    }catch(IOException ex){}
-    ta.setText(content);
   }
 }

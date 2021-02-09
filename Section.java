@@ -12,14 +12,18 @@ public class Section implements Node
   }
   public void add(Node n)
   {
-    children.addElement(n);
+    children.add(n);
+  }
+  public String getNodeName()
+  {
+    return nodeName;
   }
   public Vector<Node> getChildren()
   {
     return children;
   }
-  public String toString()
+  public void accept(Visitor v)
   {
-    return nodeName;
+    v.visit(this);
   }
 }

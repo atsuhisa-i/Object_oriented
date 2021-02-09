@@ -1,29 +1,78 @@
 import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
-public class Practice2
+public class Practice2 extends JFrame implements ActionListener
 {
+  private BoldBarGraph bbg;
+  private LineGraph lg;
+  private Vector<Observer> obs;
+  private JList<Integer> ls;
+  private JScrollPane sp;
+  private JButton bt;
+
   public static void main(String args[])
   {
-    File fl = new File("/Users/atsuhisaiino/Desktop");
+    Practice2 pr = new Practice2();
+  }
+  public Practice2()
+  {
+    super("サンプル");
+    obs = new Vector<Observer>();
+    bbg = new BoldBarGraph();
+    lg = new LineGraph();
+    addObserver(bbg);
+    addObserver(lg);
 
-    Factory f1 = new SimpleFactory();
-    Factory f2 = new DetailFactory();
-    String s1 = f1.createPage(fl);
-    String s2 = f2.createPage(fl);
-    try{
-      PrintWriter pw1 = new PrintWriter
-      (new BufferedWriter(new FileWriter("Page1.html")));
+    ls = new JList<Integer>();
+    sp = new JScrollPane(ls);
+    bt = new JButton("読込");
 
-      PrintWriter pw2 = new PrintWriter
-      (new BufferedWriter(new FileWriter("Page2.html")));
+    add(sp, BorderLayout.CENTER);
+    add(bt, BorderLayout.SOUTH);
 
-      pw1.println(s1);
-      pw2.println(s2);
+    bt.addActionListener(this);
 
-      System.out.println("ファイルに書き込みました。");
-      pw1.close();
-      pw2.close();
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
+    setSize(400, 200);
+    setVisible(true);
+    bbg.setVisible(true);
+    lg.setVisible(true);
+  }
+  void addObserver(Observer o)
+  {
+    obs.add(o);
+  }
+  void notify(Vector<Integer> d)
+  {
+    Iterator<Observer> it = obs.iterator();
+    while(it.hasNext()){
+      Observer o = it.next();
+      o.update(d);
     }
-    catch(IOException e){}
+  }
+  public void actionPerformed(ActionEvent e)
+  {
+    JFileChooser fc = new JFileChooser();
+    try{
+      int res = fc.showOpenDialog(this);
+      if(res == JFileChooser.APPROVE_OPTION){
+        File fl = fc.getSelectedFile();
+        BufferedReader br = 
+          new BufferedReader(new FileReader(fl));
+        
+        Vector<Integer> data = new Vector<Integer>();
+        String str;
+        while((str = br.readLine()) != null){
+          data.add(Integer.parseInt(str));
+        }
+        br.close();
+        ls.setListData(data);
+        notify(data);
+      }
+    }catch(Exception ex){}
   }
 }

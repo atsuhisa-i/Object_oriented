@@ -2,6 +2,7 @@ import java.util.*;
 
 public interface Node
 {
-  public String toString();
+  public String getNodeName();
   public Vector<Node> getChildren();
+  public void accept(Visitor v);
 }
