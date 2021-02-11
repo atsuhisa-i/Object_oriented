@@ -1,18 +1,16 @@
 import java.io.*;
-import java.util.*;
-import java.text.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.xml.parsers.*;
+import org.w3c.dom.*;
 
 public class Sample4 extends JFrame implements ActionListener
 {
-  private BoldBarGraph bbg;
-  private ThinBarGraph tbg;
-  private Vector<Observer> obs;
-  private JList<Integer> ls;
+  private JTree tr;
   private JScrollPane sp;
   private JButton bt;
+  private JPanel pn;
 
   public static void main(String args[])
   {
@@ -21,58 +19,38 @@ public class Sample4 extends JFrame implements ActionListener
   public Sample4()
   {
     super("サンプル");
-    obs = new Vector<Observer>();
-    bbg = new BoldBarGraph();
-    tbg = new ThinBarGraph();
-    addObserver(bbg);
-    addObserver(tbg);
 
-    ls = new JList<Integer>();
-    sp = new JScrollPane(ls);
+    String t[] = {"root"};
+    tr = new JTree(t);
+
+    sp = new JScrollPane(tr);
+    pn = new JPanel();
     bt = new JButton("読込");
 
+    pn.add(bt);
     add(sp, BorderLayout.CENTER);
-    add(bt, BorderLayout.SOUTH);
+    add(pn, BorderLayout.SOUTH);
 
     bt.addActionListener(this);
 
     setDefaultCloseOperation(EXIT_ON_CLOSE);
-    setSize(400, 200);
+    setSize(300, 300);
     setVisible(true);
-    bbg.setVisible(true);
-    tbg.setVisible(true);
-  }
-  void addObserver(Observer o)
-  {
-    obs.add(o);
-  }
-  void notify(Vector<Integer> d)
-  {
-    Iterator<Observer> it = obs.iterator();
-    while(it.hasNext()){
-      Observer o = it.next();
-      o.update(d);
-    }
   }
   public void actionPerformed(ActionEvent e)
   {
     JFileChooser fc = new JFileChooser();
+    fc.setFileFilter(new XMLFileFilter());
     try{
       int res = fc.showOpenDialog(this);
       if(res == JFileChooser.APPROVE_OPTION){
         File fl = fc.getSelectedFile();
-        BufferedReader br = new BufferedReader(
-          new FileReader(fl));
-
-          Vector<Integer> data = new Vector<Integer>();
-          String str;
-          while((str = br.readLine()) != null){
-            data.add(Integer.parseInt(str));
-          }
-          br.close();
-          ls.setListData(data);
-          notify(data);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.parse(new BufferedInputStream(new FileInputStream(fl)));
+        tr.setModel(new XMLTreeModel(doc));
       }
-    }catch(Exception ex){}
+    }
+    catch(Exception ex){}
   }
 }

@@ -1,42 +1,25 @@
-import java.util.*;
-import java.text.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.table.*;
 
 public class Practice1 extends JFrame
 {
-  private JList ls;
+  private JTable tb;
+  private JScrollPane sp;
 
   public static void main(String args[])
   {
-    Practice1 pr = new Practice1();
+    Practice1 sm = new Practice1();
   }
   public Practice1()
   {
     super("サンプル");
 
-    Vector<Person> personlist = new Vector<Person>();
-    Person p1 = new Person("Suzuki", 30, 50.5, 170.3);
-    Person p2 = new Person("sato", 18, 58.5, 175.1);
-    Person p3 = new Person("Takahashi", 26, 51.3, 170);
+    tb = new JTable(new CharTableModel());
+    sp = new JScrollPane(tb);
 
-    personlist.add(p1);
-    personlist.add(p2);
-    personlist.add(p3);
-
-    Visitor v = new WHVisitor();
-
-    Iterator<Person> it = personlist.iterator();
-    while(it.hasNext()){
-      Person p = it.next();
-      p.accept(v);
-    }
-    Vector<String> nl = v.getList();
-
-    ls = new JList<String>(nl);
-
-    add(ls, BorderLayout.CENTER);
+    add(sp, BorderLayout.CENTER);
 
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(300, 300);

@@ -1,45 +1,12 @@
-import java.util.*;
-import java.text.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.io.*;
 
-public class Sample2 extends JFrame
+public class Sample2
 {
-  private JList ls;
-
   public static void main(String args[])
   {
-    Sample2 sm = new Sample2();
-  }
-  public Sample2()
-  {
-    super("サンプル");
-    
-    Vector<Person> personlist = new Vector<Person>();
-    Person p1 = new Person("Suzuki", 30, 50.5, 170.3);
-    Person p2 = new Person("sato", 18, 58.5, 175.1);
-    Person p3 = new Person("Takahashi", 26, 51.3, 170);
-
-    personlist.add(p1);
-    personlist.add(p2);
-    personlist.add(p3);
-
-    Visitor v = new HeightVisitor();
-
-    Iterator<Person> it = personlist.iterator();
-    while(it.hasNext()){
-      Person p = it.next();
-      p.accept(v);
-    }
-    Vector<String> nl = v.getList();
-
-    ls = new JList<String>(nl);
-
-    add(ls, BorderLayout.CENTER);
-
-    setDefaultCloseOperation(EXIT_ON_CLOSE);
-    setSize(300, 300);
-    setVisible(true);
+    Application ap = new TextApplication();
+    ap.open(args[0]);
+    ap.save(args[1]);
+    System.out.println(args[1] + "に出力しました。");
   }
 }
