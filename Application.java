@@ -1,22 +1,19 @@
 import java.io.*;
-import java.util.*;
 
-public abstract class Application
+public class Application
 {
-  protected ArrayList<String> doc = new ArrayList<String>();
+  private MyApplication ma;
 
+  public Application(MyApplication m)
+  {
+    ma = m;
+  }
   public void open(String filename)
   {
-    try{
-      BufferedReader br = 
-        new BufferedReader(new FileReader(filename));
-      String line = null;
-      while((line = br.readLine()) != null){
-        doc.add(line);
-      }
-      br.close();
-    }
-    catch(IOException e){}
+    ma.open(filename);
   }
-  public abstract void save(String filename);
+  public void save(String filename)
+  {
+    ma.save(filename);
+  }
 }
