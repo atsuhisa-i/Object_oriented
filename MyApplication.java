@@ -1,10 +1,11 @@
 import java.io.*;
 import java.util.*;
 
-public class MyApplication implements Application
+public abstract class MyApplication
 {
-  private ArrayList<String> doc = new ArrayList<String>();
+  protected ArrayList<String> doc = new ArrayList<String>();
 
+  ArrayList<String> getDocument(){return doc;}
   public void open(String filename)
   {
     try{
@@ -18,19 +19,5 @@ public class MyApplication implements Application
     }
     catch(IOException e){}
   }
-  public void save(String filename)
-  {
-    try{
-      PrintWriter pw = new PrintWriter
-      (new BufferedWriter(new FileWriter(filename)));
-
-      Iterator<String> it = doc.iterator();
-      while(it.hasNext()){
-        String line = it.next();
-        pw.println(line);
-      }
-      pw.close();
-    }
-    catch(IOException e){}
-  }
+  public abstract void save(String filename);
 }

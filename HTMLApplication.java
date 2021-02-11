@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class HTMLApplication extends Application
+public class HTMLApplication extends MyApplication
 {
   public void save(String filename)
   {

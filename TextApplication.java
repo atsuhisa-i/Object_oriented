@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class TextApplication extends Application
+public class TextApplication extends MyApplication
 {
   public void save(String filename)
   {
