@@ -1,12 +1,18 @@
+import java.io.*;
 import java.awt.*;
 
-public class Rectangle implements Shape
+public class Rectangle implements Shape, Serializable
 {
   private int x1;
   private int y1;
   private int x2;
   private int y2;
+  private Color c;
 
+  public void setColor(Color c)
+  {
+    this.c = c;
+  }
   public void setStartPoint(int x1, int y1)
   {
     this.x1 = x1;
@@ -23,6 +29,7 @@ public class Rectangle implements Shape
   public int getEndY(){return y2;}
   public void draw(Graphics g)
   {
-    g.drawRect(getStartX(), getStartY(), getEndX()-getStartX(), getEndY()-getStartY());
+    g.setColor(c);
+    g.fillRect(getStartX(), getStartY(), getEndX()-getStartX(), getEndY()-getStartY());
   }
 }
