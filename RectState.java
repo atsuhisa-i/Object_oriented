@@ -4,9 +4,10 @@ import java.util.*;
 
 public class RectState implements State
 {
-  public void mousePressed(MouseEvent e, ArrayList<Shape> list)
+  public void mousePressed(MouseEvent e, ArrayList<Shape> list, Color c)
   {
     Shape sh = new Rectangle();
+    sh.setColor(c);
     sh.setStartPoint(e.getX(), e.getY());
     list.add(sh);
   }
@@ -14,5 +15,6 @@ public class RectState implements State
   {
     Shape sh = list.get(list.size()-1);
     sh.setEndPoint(e.getX(), e.getY());
+    list.add(sh);
   }
 }

@@ -5,7 +5,7 @@ import java.util.*;
 public class SelectState implements State
 {
   boolean isSelected = false;
-  public void mousePressed(MouseEvent e, ArrayList<Shape> list)
+  public void mousePressed(MouseEvent e, ArrayList<Shape> list, Color c)
   {
     Iterator<Shape> it = list.iterator();
     Shape sh = null;
@@ -34,5 +34,6 @@ public class SelectState implements State
     int y2 = sh.getEndY();
     sh.setStartPoint(e.getX(), e.getY());
     sh.setEndPoint(e.getX()+x2-x1, e.getY()+y2-y1);
+    list.add(sh);
   }
 }
